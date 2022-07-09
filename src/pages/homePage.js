@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/headerMovieList";
+import FilterCard from "../components/filterMoviesCard";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 import MovieList from "../components/movieList";
 import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         padding: "20px",
     },
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
         top: theme.spacing(2),
         right: theme.spacing(2),
     },
-});
+}));
 
 const MovieListPage = (props) => {
     const classes = useStyles();
@@ -41,6 +42,13 @@ const MovieListPage = (props) => {
         else setGenreFilter(value);
     };
 
+    const addToFavourites = (movieId) => {
+        const updatedMovies = movies.map((m) =>
+            m.id === movieId ? { ...m, favourite: true } : m
+        );
+        setMovies(updatedMovies);
+    };
+
     useEffect(() => {
         fetch(
             `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&page=1`
@@ -56,6 +64,7 @@ const MovieListPage = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     return (
         <>
             <Grid container className={classes.root}>
@@ -63,7 +72,7 @@ const MovieListPage = (props) => {
                     <Header title={"Home Page"} />
                 </Grid>
                 <Grid item container spacing={5}>
-                    <MovieList movies={displayedMovies}></MovieList>
+                    <MovieList movies={displayedMovies} selectFavourite={addToFavourites} />
                 </Grid>
             </Grid>
             <Fab
