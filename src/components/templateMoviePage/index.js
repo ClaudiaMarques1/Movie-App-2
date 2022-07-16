@@ -34,29 +34,32 @@ const TemplateMoviePage = ({ movie, children }) => {
 
     return (
         <>
-            <MovieHeader movie={movie} />
+            <div className={classes.root}>
+                <MovieHeader movie={movie} />
 
-            <Grid container spacing={5} style={{ padding: "15px" }}>
-                <Grid item xs={3}>
-                    <div className={classes.imageListRoot}>
-                        <ImageList rowHeight={500} className={classes.gridList} cols={1}>
-                            {images.map((image) => (
-                                <ImageListItem key={image.file_path} cols={1}>
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
-                                        alt={image.poster_path}
-                                    />
-                                </ImageListItem>
-                            ))}
-                        </ImageList>
-                    </div>
-                </Grid>
+                <Grid container spacing={5} style={{ padding: "15px" }}>
+                    <Grid item xs={3}>
+                        <div className={classes.imageListRoot}>
+                            <ImageList rowHeight={500} className={classes.gridList} cols={1}>
+                                {images.map((image) => (
+                                    <ImageListItem key={image.file_path} cols={1}>
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
+                                            alt={image.poster_path}
+                                        />
+                                    </ImageListItem>
+                                ))}
+                            </ImageList>
+                        </div>
+                    </Grid>
 
-                <Grid item xs={9}>
-                    {children}
+                    <Grid item xs={9}>
+                        {children}
+                    </Grid>
                 </Grid>
-            </Grid>
+            </div>
         </>
+
     );
 };
 
