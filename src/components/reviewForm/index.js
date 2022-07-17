@@ -116,4 +116,4 @@ const ReviewForm = ({ movie }) => {
     );
 };
 
-export default withRouter(ReviewForm);
+export default ReviewForm;

@@ -1,26 +1,52 @@
-import React from "react";
-import PageTemplate from '../components/templateMovieListPage'
-import { getUpcomingMovie } from "../api/tmdb-api";
-import { useQuery } from 'react-query'
-import Spinner from '../components/spinner'
+import React, { useContext } from "react";
+import PageTemplate from "../components/templateMovieListPage";
+import { MoviesContext } from "../contexts/moviesContext";
+import RemoveFromWatchlists from "../components/cardIcons/removeFromFavourites";
+import WriteReview from "../components/cardIcons/writeReview";
+import { useQueries } from "react-query";
+import { getMovie } from "../api/tmdb-api";
+import Spinner from "../components/spinner";
 
-const UpcomingMoviesPage = (props) => {
-    const { data, error, isLoading, isError } = useQuery('discover', getUpcomingMovie)
+const WatchlistMoviesPage = () => {
+    const { watchlists: movieIds } = useContext(MoviesContext);
+
+    // Create an array of queries and run in parallel.
+    const watchlistMovieQueries = useQueries(
+        movieIds.map((movieId) => {
+            return {
+                queryKey: ["movie", { id: movieId }],
+                queryFn: getMovie,
+            };
+        })
+    );
+    // Check if any of the parallel queries is still loading.
+    const isLoading = watchlistMovieQueries.find((m) => m.isLoading === true);
 
     if (isLoading) {
-        return <Spinner />
+        return <Spinner />;
     }
 
-    if (isError) {
-        return <h1>{error.message}</h1>
-    }
-    const movies = data.results;
+    const movies = watchlistMovieQueries.map((q) => {
+        q.data.genre_ids = q.data.genres.map((g) => g.id);
+        return q.data;
+    });
+
+    const toDo = () => true;
 
     return (
         <PageTemplate
-            title='Upcoming Movies'
+            title="Watchlist Movies"
             movies={movies}
+            action={(movie) => {
+                return (
+                    <>
+                        <RemoveFromWatchlists movie={movie} />
+                        <WriteReview movie={movie} />
+                    </>
+                );
+            }}
         />
     );
 };
-export default UpcomingMoviesPage;
+
+export default WatchlistMoviesPage;
