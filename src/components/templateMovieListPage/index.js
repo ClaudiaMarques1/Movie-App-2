@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function MovieListPageTemplate({ movies, title, action }) {
+function MovieListPageTemplate({ movies, title, selectFavourite }) {
     const classes = useStyles();
     const [titleFilter, setTitleFilter] = useState("");
     const [genreFilter, setGenreFilter] = useState("0");
@@ -48,7 +48,7 @@ function MovieListPageTemplate({ movies, title, action }) {
                     <Header title={title} />
                 </Grid>
                 <Grid item container spacing={5}>
-                    <MovieList action={action} movies={displayedMovies} />
+                    <MovieList selectFavourite={selectFavourite} movies={displayedMovies} />
                 </Grid>
             </Grid>
             <Fab

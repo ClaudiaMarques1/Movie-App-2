@@ -1,4 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -12,9 +14,6 @@ import CalendarIcon from "@material-ui/icons/CalendarTodayTwoTone";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
-import { MoviesContext } from "../../contexts/moviesContext";
 
 const useStyles = makeStyles({
     card: { maxWidth: 345 },
@@ -24,31 +23,13 @@ const useStyles = makeStyles({
     },
 });
 
-export default function MovieCard({ movie, action }) {
+export default function MovieCard(props) {
     const classes = useStyles();
-    const { favourites, addToFavourites } = useContext(MoviesContext);
-    const { watchlists, addToWatchlists } = useContext(MoviesContext);
+    const movie = props.movie;
 
-    if (favourites.find((id) => id === movie.id)) {
-        movie.favourite = true;
-    } else {
-        movie.favourite = false
-    }
-
-    if (watchlists.find((id) => id === movie.id)) {
-        movie.watchlist = true;
-    } else {
-        movie.watchlist = false
-    }
-
-    const handleAddToFavourites = (e) => {
+    const handleAddToFavourite = (e) => {
         e.preventDefault();
-        addToFavourites(movie);
-    };
-
-    const handleAddToWatchlists = (e) => {
-        e.preventDefault();
-        addToWatchlists(movie);
+        props.selectFavourite(movie.id);
     };
 
     return (
@@ -93,13 +74,15 @@ export default function MovieCard({ movie, action }) {
                 </Grid>
             </CardContent>
             <CardActions disableSpacing>
-                {action(movie)}
+                <IconButton aria-label="add to favourites" onClick={handleAddToFavourite}>
+                    <FavoriteIcon color="primary" fontSize="large" />
+                </IconButton>
                 <Link to={`/movies/${movie.id}`}>
                     <Button variant="outlined" size="medium" color="primary">
                         More Info ...
                     </Button>
                 </Link>
             </CardActions>
-        </Card>
+        </Card >
     );
 }

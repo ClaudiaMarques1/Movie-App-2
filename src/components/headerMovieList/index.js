@@ -21,6 +21,7 @@ const Header = (props) => {
     const classes = useStyles();
     const title = props.title
     const navigate = useNavigate();
+
     return (
         <Paper component="div" className={classes.root}>
             <IconButton aria-label="go back" onClick={() => navigate(-1)}>

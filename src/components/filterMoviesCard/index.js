@@ -55,7 +55,6 @@ export default function FilterMoviesCard(props) {
         handleChange(e, "genre", e.target.value);
     };
 
-
     return (
         <>
             <Card className={classes.root} variant="outlined">
@@ -72,7 +71,7 @@ export default function FilterMoviesCard(props) {
                         value={props.titleFilter}
                         variant="filled"
                         onChange={handleTextChange}
-                    /> variant="filled"
+                    />
                     <FormControl className={classes.formControl}>
                         <InputLabel id="genre-label">Genre</InputLabel>
                         <Select
