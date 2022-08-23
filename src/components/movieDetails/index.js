@@ -6,11 +6,11 @@ import MonetizationIcon from "@material-ui/icons/MonetizationOn";
 import StarRate from "@material-ui/icons/StarRate";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-// New
 import NavigationIcon from "@material-ui/icons/Navigation";
 import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
 import MovieReviews from '../movieReviews'
+import SimilarMovieCard from '../similarMovieCard'
 
 const useStyles = makeStyles((theme) => ({
     chipRoot: {
@@ -55,6 +55,16 @@ const MovieDetails = ({ movie }) => {
             <Typography variant="h6" component="p">
                 {movie.overview}
             </Typography>
+            <Typography variant="h6" component="p">
+                Release Date: {movie.release_date}
+            </Typography>
+            {movie.production_companies.map((p) => (
+                <li key={p.name}>
+                    Production Company: {p.name}
+                </li>
+            ))}
+            <div>
+            </div>
             <div className={classes.chipRoot}>
                 <Paper component="ul" className={classes.chipSet}>
                     <li>
